@@ -2029,7 +2029,7 @@ interface Vm {
 
     /// Resolves the env variable placeholders of a given input string.
     #[cheatcode(group = Environment)]
-    function resolveEnv(string calldata input) external;
+    function resolveEnv(string calldata input) external returns (string memory);
 
     /// Sets environment variables.
     #[cheatcode(group = Environment)]

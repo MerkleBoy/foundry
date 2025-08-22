@@ -436,7 +436,7 @@ interface Vm {
     function replace(string calldata input, string calldata from, string calldata to) external pure returns (string memory output);
     function resetGasMetering() external;
     function resetNonce(address account) external;
-    function resolveEnv(string calldata input) external;
+    function resolveEnv(string calldata input) external returns (string memory);
     function resumeGasMetering() external;
     function resumeTracing() external view;
     function revertTo(uint256 snapshotId) external returns (bool success);
