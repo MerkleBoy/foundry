@@ -8868,6 +8868,26 @@
     },
     {
       "func": {
+        "id": "resolveEnv",
+        "description": "Resolves the env variable placeholders of a given input string.",
+        "declaration": "function resolveEnv(string calldata input) external;",
+        "visibility": "external",
+        "mutability": "",
+        "signature": "resolveEnv(string)",
+        "selector": "0xddd2128d",
+        "selectorBytes": [
+          221,
+          210,
+          18,
+          141
+        ]
+      },
+      "group": "environment",
+      "status": "stable",
+      "safety": "safe"
+    },
+    {
+      "func": {
         "id": "resumeGasMetering",
         "description": "Resumes gas metering (i.e. gas usage is counted again). Noop if already on.",
         "declaration": "function resumeGasMetering() external;",

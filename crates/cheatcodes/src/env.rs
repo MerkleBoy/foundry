@@ -28,6 +28,15 @@ impl Cheatcode for setEnvCall {
     }
 }
 
+impl Cheatcode for resolveEnvCall {
+    fn apply(&self, _state: &mut Cheatcodes) -> Result {
+        let Self { input } = self;
+        let resolved = foundry_config::resolve::interpolate(input)
+            .map_err(|e| fmt_err!("failed to resolve env var: {e}"))?;
+        Ok(resolved.abi_encode())
+    }
+}
+
 impl Cheatcode for envExistsCall {
     fn apply(&self, _state: &mut Cheatcodes) -> Result {
         let Self { name } = self;
