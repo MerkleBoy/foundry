@@ -821,10 +821,6 @@ interface Vm {
     #[cheatcode(group = Evm, safety = Unsafe)]
     function activeFork() external view returns (uint256 forkId);
 
-    /// Returns the chain id of the currently active fork. Reverts if no fork is currently active.
-    #[cheatcode(group = Evm, safety = Unsafe)]
-    function activeChain() external view returns (uint256 chainId);
-
     /// Creates a new fork with the given endpoint and the _latest_ block and returns the identifier of the fork.
     #[cheatcode(group = Evm, safety = Unsafe)]
     function createFork(string calldata urlOrAlias) external returns (uint256 forkId);

@@ -32,7 +32,6 @@ interface Vm {
     function _expectCheatcodeRevert(bytes calldata revertData) external;
     function accessList(AccessListItem[] calldata access) external;
     function accesses(address target) external returns (bytes32[] memory readSlots, bytes32[] memory writeSlots);
-    function activeChain() external view returns (uint256 chainId);
     function activeFork() external view returns (uint256 forkId);
     function addr(uint256 privateKey) external pure returns (address keyAddr);
     function allowCheatcodes(address account) external;
