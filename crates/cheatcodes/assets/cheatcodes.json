@@ -782,6 +782,26 @@
     },
     {
       "func": {
+        "id": "activeChain",
+        "description": "Returns the chain id of the currently active fork. Reverts if no fork is currently active.",
+        "declaration": "function activeChain() external view returns (uint256 chainId);",
+        "visibility": "external",
+        "mutability": "view",
+        "signature": "activeChain()",
+        "selector": "0x98bb6e67",
+        "selectorBytes": [
+          152,
+          187,
+          110,
+          103
+        ]
+      },
+      "group": "evm",
+      "status": "stable",
+      "safety": "unsafe"
+    },
+    {
+      "func": {
         "id": "activeFork",
         "description": "Returns the identifier of the currently active fork. Reverts if no fork is currently active.",
         "declaration": "function activeFork() external view returns (uint256 forkId);",
