@@ -9772,6 +9772,26 @@
     },
     {
       "func": {
+        "id": "setGasEstimateMultiplier",
+        "description": "Sets the gas estimate multiplier for the next transaction only.\nThis allows scripts to set different gas multipliers for different transactions\nwhen interacting with multiple chains or contracts with varying gas requirements.",
+        "declaration": "function setGasEstimateMultiplier(uint64 multiplier) external;",
+        "visibility": "external",
+        "mutability": "",
+        "signature": "setGasEstimateMultiplier(uint64)",
+        "selector": "0xb4714041",
+        "selectorBytes": [
+          180,
+          113,
+          64,
+          65
+        ]
+      },
+      "group": "scripting",
+      "status": "stable",
+      "safety": "safe"
+    },
+    {
+      "func": {
         "id": "setNonce",
         "description": "Sets the nonce of an account. Must be higher than the current nonce of the account.",
         "declaration": "function setNonce(address account, uint64 newNonce) external;",

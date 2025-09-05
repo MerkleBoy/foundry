@@ -313,6 +313,7 @@ impl BundledState {
                     .skip(already_broadcasted)
                     .map(|tx_with_metadata| {
                         let is_fixed_gas_limit = tx_with_metadata.is_fixed_gas_limit;
+                        let gas_estimate_multiplier = tx_with_metadata.gas_estimate_multiplier;
 
                         let kind = match tx_with_metadata.tx().clone() {
                             TransactionMaybeSigned::Signed { tx, .. } => {
@@ -343,7 +344,7 @@ impl BundledState {
                             }
                         };
 
-                        Ok((kind, is_fixed_gas_limit))
+                        Ok((kind, is_fixed_gas_limit, gas_estimate_multiplier))
                     })
                     .collect::<Result<Vec<_>>>()?;
 
@@ -372,14 +373,18 @@ impl BundledState {
                         batch_number * batch_size,
                         batch_number * batch_size + std::cmp::min(batch_size, batch.len()) - 1
                     ));
-                    for (kind, is_fixed_gas_limit) in batch {
+                    for (kind, is_fixed_gas_limit, gas_estimate_multiplier) in batch {
+                        // Use per-transaction gas multiplier if set, otherwise use global one
+                        let gas_multiplier = gas_estimate_multiplier
+                            .unwrap_or(self.args.gas_estimate_multiplier);
+                        
                         let fut = send_transaction(
                             provider.clone(),
                             kind.clone(),
                             sequential_broadcast,
                             *is_fixed_gas_limit,
                             estimate_via_rpc,
-                            self.args.gas_estimate_multiplier,
+                            gas_multiplier,
                         );
                         pending_transactions.push(fut);
                     }

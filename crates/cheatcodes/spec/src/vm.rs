@@ -2241,6 +2241,12 @@ interface Vm {
     #[cheatcode(group = Scripting)]
     function stopBroadcast() external;
 
+    /// Sets the gas estimate multiplier for the next transaction only.
+    /// This allows scripts to set different gas multipliers for different transactions
+    /// when interacting with multiple chains or contracts with varying gas requirements.
+    #[cheatcode(group = Scripting)]
+    function setGasEstimateMultiplier(uint64 multiplier) external;
+
     /// Takes a signed transaction and broadcasts it to the network.
     #[cheatcode(group = Scripting)]
     function broadcastRawTransaction(bytes calldata data) external;

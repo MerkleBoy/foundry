@@ -80,6 +80,7 @@ impl ScriptRunner {
                         ..Default::default()
                     }
                     .into(),
+                    gas_estimate_multiplier: None,
                 })
             }),
             ScriptPredeployLibraries::Create2(libraries, salt) => {
@@ -115,6 +116,7 @@ impl ScriptRunner {
                             ..Default::default()
                         }
                         .into(),
+                        gas_estimate_multiplier: None,
                     });
                 }
 

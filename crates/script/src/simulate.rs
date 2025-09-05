@@ -58,6 +58,7 @@ impl PreSimulationState {
             .into_iter()
             .map(|tx| {
                 let rpc = tx.rpc.expect("missing broadcastable tx rpc url");
+                let gas_estimate_multiplier = tx.gas_estimate_multiplier;
                 let sender = tx.transaction.from().expect("all transactions should have a sender");
                 let nonce = tx.transaction.nonce().expect("all transactions should have a sender");
                 let to = tx.transaction.to();
@@ -74,7 +75,9 @@ impl PreSimulationState {
                     builder.set_create(false, sender.create(nonce), &address_to_abi)?;
                 }
 
-                Ok(builder.build())
+                let mut transaction = builder.build();
+                transaction.gas_estimate_multiplier = gas_estimate_multiplier;
+                Ok(transaction)
             })
             .collect::<Result<VecDeque<_>>>()?;
 
@@ -148,12 +151,13 @@ impl PreSimulationState {
                     false
                 };
 
+                // Use per-transaction gas multiplier if set, otherwise use global one
+                let gas_multiplier = transaction
+                    .gas_estimate_multiplier
+                    .unwrap_or(self.args.gas_estimate_multiplier);
+
                 let transaction = ScriptTransactionBuilder::from(transaction)
-                    .with_execution_result(
-                        &result,
-                        self.args.gas_estimate_multiplier,
-                        &self.build_data,
-                    )
+                    .with_execution_result(&result, gas_multiplier, &self.build_data)
                     .build();
 
                 eyre::Ok((Some(transaction), is_noop_tx, result.traces))

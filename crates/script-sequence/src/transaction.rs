@@ -32,6 +32,8 @@ pub struct TransactionWithMetadata {
     pub transaction: TransactionMaybeSigned,
     pub additional_contracts: Vec<AdditionalContract>,
     pub is_fixed_gas_limit: bool,
+    #[serde(skip)]
+    pub gas_estimate_multiplier: Option<u64>,
 }
 
 fn default_string() -> Option<String> {
@@ -59,6 +61,7 @@ impl TransactionWithMetadata {
             is_fixed_gas_limit: Default::default(),
             additional_contracts: Default::default(),
             rpc: Default::default(),
+            gas_estimate_multiplier: Default::default(),
         }
     }
 

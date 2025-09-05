@@ -210,6 +210,8 @@ pub struct BroadcastableTransaction {
     pub rpc: Option<String>,
     /// The transaction to broadcast.
     pub transaction: TransactionMaybeSigned,
+    /// Gas estimate multiplier for this specific transaction (percentage, e.g., 130 = 130%)
+    pub gas_estimate_multiplier: Option<u64>,
 }
 
 #[derive(Clone, Debug, Copy)]
@@ -441,6 +443,9 @@ pub struct Cheatcodes {
     /// Current broadcasting information
     pub broadcast: Option<Broadcast>,
 
+    /// Gas estimate multiplier for the next transaction (percentage, e.g., 130 = 130%)
+    pub gas_estimate_multiplier: Option<u64>,
+
     /// Scripting based transactions
     pub broadcastable_transactions: BroadcastableTransactions,
 
@@ -537,6 +542,7 @@ impl Cheatcodes {
             expected_creates: Default::default(),
             allowed_mem_writes: Default::default(),
             broadcast: Default::default(),
+            gas_estimate_multiplier: Default::default(),
             broadcastable_transactions: Default::default(),
             access_list: Default::default(),
             test_context: Default::default(),
@@ -903,9 +909,11 @@ impl Cheatcodes {
                         tx_req.authorization_list = Some(active_delegations);
                     }
 
+                    let gas_estimate_multiplier = self.gas_estimate_multiplier.take();
                     self.broadcastable_transactions.push_back(BroadcastableTransaction {
                         rpc: ecx.journaled_state.database.active_fork_url(),
                         transaction: tx_req.into(),
+                        gas_estimate_multiplier,
                     });
                     debug!(target: "cheatcodes", tx=?self.broadcastable_transactions.back().unwrap(), "broadcastable call");
 
@@ -1615,6 +1623,7 @@ impl Inspector<EthEvmContext<&mut dyn DatabaseExt>> for Cheatcodes {
                 let is_fixed_gas_limit = check_if_fixed_gas_limit(&ecx, input.gas_limit());
 
                 let account = &ecx.journaled_state.inner.state()[&broadcast.new_origin];
+                let gas_estimate_multiplier = self.gas_estimate_multiplier.take();
                 self.broadcastable_transactions.push_back(BroadcastableTransaction {
                     rpc: ecx.journaled_state.database.active_fork_url(),
                     transaction: TransactionRequest {
@@ -1627,6 +1636,7 @@ impl Inspector<EthEvmContext<&mut dyn DatabaseExt>> for Cheatcodes {
                         ..Default::default()
                     }
                     .into(),
+                    gas_estimate_multiplier,
                 });
 
                 input.log_debug(self, &input.scheme().unwrap_or(CreateScheme::Create));

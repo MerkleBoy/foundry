@@ -266,6 +266,14 @@ impl Cheatcode for stopBroadcastCall {
     }
 }
 
+impl Cheatcode for setGasEstimateMultiplierCall {
+    fn apply_stateful(&self, ccx: &mut CheatsCtxt) -> Result {
+        let Self { multiplier } = self;
+        ccx.state.gas_estimate_multiplier = Some(*multiplier);
+        Ok(Default::default())
+    }
+}
+
 impl Cheatcode for getWalletsCall {
     fn apply_stateful(&self, ccx: &mut CheatsCtxt) -> Result {
         let wallets = ccx.state.wallets().signers().unwrap_or_default();

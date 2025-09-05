@@ -933,9 +933,11 @@ impl Cheatcode for broadcastRawTransactionCall {
         )?;
 
         if ccx.state.broadcast.is_some() {
+            let gas_estimate_multiplier = ccx.state.gas_estimate_multiplier.take();
             ccx.state.broadcastable_transactions.push_back(BroadcastableTransaction {
                 rpc: ccx.ecx.journaled_state.database.active_fork_url(),
                 transaction: tx.try_into()?,
+                gas_estimate_multiplier,
             });
         }
 

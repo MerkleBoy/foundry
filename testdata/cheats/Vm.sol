@@ -481,6 +481,7 @@ interface Vm {
     function setArbitraryStorage(address target, bool overwrite) external;
     function setBlockhash(uint256 blockNumber, bytes32 blockHash) external;
     function setEnv(string calldata name, string calldata value) external;
+    function setGasEstimateMultiplier(uint64 multiplier) external;
     function setNonce(address account, uint64 newNonce) external;
     function setNonceUnsafe(address account, uint64 newNonce) external;
     function setSeed(uint256 seed) external;
